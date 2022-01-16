@@ -80,16 +80,11 @@ pub fn build_charset(chars: &mut Vec<char>,
     }
 }
 
-fn get_rounded_log2_as_u32(f: &f64) -> u32 {
-    return f.log2().round() as u32;
-}
-
 pub fn calculate_entropy(l: usize, c: usize) -> u32 {
-    let length     = l as f64;
-    let charspace  = c as f64;
-    let result     = charspace.powf(length);
-
-    return get_rounded_log2_as_u32(&result);
+    let length       = l as f64;
+    let chars_count  = c as f64;
+    let permutations = chars_count.powf(length);
+    return permutations.log2().round() as u32;
 }
 
 pub fn print_entropy(e: &u32) {
