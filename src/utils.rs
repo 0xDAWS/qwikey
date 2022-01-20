@@ -53,21 +53,13 @@ pub fn build_charset(chars: &mut Vec<char>, args: &Args) {
         chars.append(&mut set.specl);
 
     } else {
-        if args.upper { 
-            chars.append(&mut set.upper);
-        } 
+        if args.upper   { chars.append(&mut set.upper); } 
     
-        if args.lower {
-            chars.append(&mut set.lower);
-        } 
+        if args.lower   { chars.append(&mut set.lower); } 
     
-        if args.digits {
-            chars.append(&mut set.digit);
-        } 
+        if args.digits  { chars.append(&mut set.digit); } 
     
-        if args.special {
-            chars.append(&mut set.specl);
-        }      
+        if args.special { chars.append(&mut set.specl); }      
     }
 
     // If noambig mode true, then remove all ambiguous characters from chars
