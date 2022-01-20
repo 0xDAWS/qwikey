@@ -1,10 +1,11 @@
 use std::f64;
+use crate::argparser::Args;
 
 struct AsciiChars {
     pub lower: Vec<char>,
     pub upper: Vec<char>,
     pub digit: Vec<char>,
-    pub spec : Vec<char>,
+    pub specl: Vec<char>,
     pub ambig: Vec<char>
 }
 
@@ -27,7 +28,7 @@ impl AsciiChars {
             '0', '1', '2', '3', '4', '5', '6', 
             '7', '8', '9'],
 
-            spec: vec![
+            specl:  vec![
             '!', '"', '#', '$', '%', '&', '(', 
             ')', '*', '+', ',', '-', '.', '/', 
             ':', ';', '<', '=', '>', '?', '@', 
@@ -40,40 +41,37 @@ impl AsciiChars {
     }
 }
 
-pub fn build_charset(chars: &mut Vec<char>,
-                     arg_upper: bool, arg_lower: bool, 
-                     arg_digit: bool, arg_spec:  bool,
-                     arg_noambig: bool) {
+pub fn build_charset(chars: &mut Vec<char>, args: &Args) {
 
     let mut set = AsciiChars::charset();
 
     if let (false,false,false,false) = 
-           (arg_upper,arg_lower,arg_digit,arg_spec) { 
+           (args.upper,args.lower,args.digits,args.special) { 
         chars.append(&mut set.lower);
         chars.append(&mut set.upper);
         chars.append(&mut set.digit);
-        chars.append(&mut set.spec );
+        chars.append(&mut set.specl);
 
     } else {
-        if arg_upper { 
+        if args.upper { 
             chars.append(&mut set.upper);
         } 
     
-        if arg_lower {
+        if args.lower {
             chars.append(&mut set.lower);
         } 
     
-        if arg_digit {
+        if args.digits {
             chars.append(&mut set.digit);
         } 
     
-        if arg_spec {
-            chars.append(&mut set.spec );
+        if args.special {
+            chars.append(&mut set.specl);
         }      
     }
 
     // If noambig mode true, then remove all ambiguous characters from chars
-    if arg_noambig {
+    if args.noambiguous {
         for i in 0..set.ambig.len() {
             chars.retain(|&x| x != set.ambig[i]);
         }
