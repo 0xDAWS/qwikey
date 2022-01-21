@@ -19,6 +19,7 @@ impl SetMode {
     }
 }
 
+
 fn main() {
     let args: Args = argparser::get_args();
 

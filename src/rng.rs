@@ -38,10 +38,9 @@ fn gen_random_str(key   : &mut Vec<char>,
 
 pub fn get_str_key(args: &Args) {
 
+    let mut key    : Vec<char> = vec!['0';args.length]; 
     let mut charset: Vec<char> = Vec::new();
     build_charset(&mut charset, args);
-
-    let mut key  : Vec<char> = vec!['0';args.length]; 
     gen_random_str(&mut key, &mut charset);
 
     println!("{}", &key.iter().collect::<String>());
@@ -71,7 +70,7 @@ pub fn get_hex_key(args: &Args) {
     key.zeroize();
 
     if args.entropy {
-        print_entropy(&calculate_entropy(args.length/2, 256));
+        print_entropy(&calculate_entropy(args.length/2, u8::MAX.into()));
     } else {
         return;
     }

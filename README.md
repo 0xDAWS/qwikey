@@ -129,14 +129,14 @@ The steps to find the entropy value in bits are
 Qwikey calculates the entropy using the following function:
 
 ```rust
-fn calculate_entropy(l: usize, c: usize) -> u32 {
+pub fn calculate_entropy(l: usize, c: usize) -> u32 {
     let length       = l as f64;
-    let charspace    = c as f64;
-    let permutations = chars_count.powf(length);
+    let chars_size   = c as f64;
+    let permutations = chars_size.powf(length);
     return permutations.log2().round() as u32;
 }
 ```
 
 Once the entropy is known, we can determine with precision how many guesses it would take to exhaust every possible permutation.
 
-For example if we generate a key with entropy=64 bits, it would take `2^64` guesses to exhaust all combinations in a brute-force attack, and on average an attacker will have to try at least `(2^64)/2` guesses to find the correct key.
+For example if we generate a key with entropy=64 bits, it would take `2^64` guesses to exhaust all combinations in a brute-force attack 2, and on average an attacker will have to try at least `(2^64)/2` guesses to find the correct key.

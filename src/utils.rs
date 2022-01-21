@@ -36,7 +36,7 @@ impl AsciiChars {
             '|', '}', '~'], 
 
             ambig: vec![
-            '0','O','o','l','1','i','I','|','!']
+            '0','O','o','l','1','i','|','G','6','B','8']
         }
     }
 }
@@ -72,8 +72,8 @@ pub fn build_charset(chars: &mut Vec<char>, args: &Args) {
 
 pub fn calculate_entropy(l: usize, c: usize) -> u32 {
     let length       = l as f64;
-    let chars_count  = c as f64;
-    let permutations = chars_count.powf(length);
+    let chars_size   = c as f64;
+    let permutations = chars_size.powf(length);
     return permutations.log2().round() as u32;
 }
 
