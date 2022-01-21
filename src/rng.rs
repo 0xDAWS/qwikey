@@ -58,7 +58,8 @@ pub fn get_hex_key(args: &Args) {
     let mut key  : Vec<u8> = vec![0;args.length/2]; 
 
     if let Err(e) = gen_random_buf(&mut key) {
-        panic!("Error: {}", &e);
+        println!("Error: {}", &e);
+        return;
     } 
 
     if args.hexupper {
