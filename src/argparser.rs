@@ -41,6 +41,13 @@ pub struct Args {
 
     #[clap(short = 'L', long = "length", help = "Length of string to output")]
     pub length: usize,
+
+    #[clap(
+        short = 'r',
+        long = "allow-repeating",
+        help = "Skip checking for repeating characters"
+    )]
+    pub repeat: bool,
 }
 
 pub fn get_args() -> Args {

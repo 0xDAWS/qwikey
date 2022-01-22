@@ -1,5 +1,6 @@
 use getrandom::{getrandom, Error};
 use hex::{encode, encode_upper};
+// use rand::prelude::ThreadRng;
 use rand::{thread_rng, Rng};
 use zeroize::Zeroize;
 
@@ -11,7 +12,15 @@ fn gen_random_buf(buf: &mut Vec<u8>) -> Result<(), Error> {
     Ok(())
 }
 
-fn gen_random_str(charset: &[char], l: usize) -> Result<String, Box<dyn std::error::Error>> {
+fn gen_random_str(
+    charset: &[char],
+    l: usize,
+    allowrepeat: bool,
+) -> Result<String, Box<dyn std::error::Error>> {
+    /*
+     * TODO
+     * -> If no repeat chars allowed then the entropy calculator needs to reflect the difference as the charset is reduced by 1
+     */
     let mut rng = thread_rng();
     let mut ctr = 0;
     let mut key = String::with_capacity(l);
@@ -19,15 +28,19 @@ fn gen_random_str(charset: &[char], l: usize) -> Result<String, Box<dyn std::err
     while ctr < l {
         let idx = rng.gen_range(0..charset.len());
 
-        // Check key[ctr-1] for a repeating character
-        if ctr == 0 {
+        if allowrepeat {
             key.push(charset[idx]);
             ctr += 1;
-        } else if key.chars().nth(ctr - 1).unwrap() == charset[idx] {
-            continue;
         } else {
-            key.push(charset[idx]);
-            ctr += 1;
+            if ctr == 0 {
+                key.push(charset[idx]);
+                ctr += 1;
+            } else if key.chars().nth(ctr - 1).unwrap() == charset[idx] {
+                continue;
+            } else {
+                key.push(charset[idx]);
+                ctr += 1;
+            }
         }
     }
 
@@ -38,7 +51,7 @@ pub fn get_str_key(args: &Args) {
     let mut charset: Vec<char> = Vec::new();
     build_charset(&mut charset, args);
 
-    match gen_random_str(&charset, args.length) {
+    match gen_random_str(&charset, args.length, args.repeat) {
         Ok(mut k) => {
             println!("{}", &k);
 
