@@ -32,10 +32,11 @@ Hex mode will generate a random key which contains only valid hex digits in eith
 
 ### Other Options
 
-| Option             | Type | Required | Short | Long           |
-|:------------------:|:----:|:--------:|:-----:| -------------- |
-| non ambiguous      | bool | no       | -n    | --no-lookalike |
-| entropy calculator | bool | no       | -e    | --entropy      |
+| Option             | Type | Required | Short | Long              |
+|:------------------:|:----:|:--------:|:-----:|:-----------------:|
+| non ambiguous      | bool | no       | -n    | --no-lookalike    |
+| entropy calculator | bool | no       | -e    | --entropy         |
+| allow-repeating    | bool | no       | -r    | --allow-repeating |
 
 # Examples
 
