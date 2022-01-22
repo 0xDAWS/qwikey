@@ -2,8 +2,8 @@ mod argparser;
 mod rng;
 mod utils;
 
-use rng::{get_str_key,get_hex_key};
 use argparser::Args;
+use rng::{get_hex_key, get_str_key};
 
 enum SetMode {
     HexMode,
@@ -11,24 +11,22 @@ enum SetMode {
 }
 
 impl SetMode {
-    fn run(&mut self, args: &Args) {
+    fn run(&self, args: &Args) {
         match self {
             Self::HexMode => get_hex_key(args),
-            Self::StrMode => get_str_key(args), 
+            Self::StrMode => get_str_key(args),
         }
     }
 }
 
-
 fn main() {
     let args: Args = argparser::get_args();
 
-    if let true = (args.hexlower || args.hexupper) {
-        let mut mode = SetMode::HexMode;
+    if args.hexlower || args.hexupper {
+        let mode = SetMode::HexMode;
         mode.run(&args);
-
     } else {
-        let mut mode = SetMode::StrMode;
+        let mode = SetMode::StrMode;
         mode.run(&args);
     }
 }
