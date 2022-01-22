@@ -23,10 +23,10 @@ fn main() {
     let args: Args = argparser::get_args();
 
     if args.hexlower || args.hexupper {
-        let mode = SetMode::HexMode;
+        let mode: SetMode = SetMode::HexMode;
         mode.run(&args);
     } else {
-        let mode = SetMode::StrMode;
+        let mode: SetMode = SetMode::StrMode;
         mode.run(&args);
     }
 }

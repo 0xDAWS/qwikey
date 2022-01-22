@@ -11,38 +11,46 @@ fn gen_random_buf(buf: &mut Vec<u8>) -> Result<(), Error> {
     Ok(())
 }
 
-fn gen_random_str(key: &mut Vec<char>, chars: &mut Vec<char>) {
+fn gen_random_str(charset: &[char], l: usize) -> Result<String, Box<dyn std::error::Error>> {
     let mut rng = thread_rng();
     let mut ctr = 0;
+    let mut key = String::with_capacity(l);
 
-    while ctr < key.len() {
-        let idx = rng.gen_range(0..chars.len());
+    while ctr < l {
+        let idx = rng.gen_range(0..charset.len());
 
         // Check key[ctr-1] for a repeating character
         if ctr == 0 {
-            key[ctr] = chars[idx];
+            key.push(charset[idx]);
             ctr += 1;
-        } else if key[ctr - 1] == chars[idx] {
+        } else if key.chars().nth(ctr - 1).unwrap() == charset[idx] {
             continue;
         } else {
-            key[ctr] = chars[idx];
+            key.push(charset[idx]);
             ctr += 1;
         }
     }
+
+    Ok(key)
 }
 
 pub fn get_str_key(args: &Args) {
-    let mut key: Vec<char> = vec!['0'; args.length];
     let mut charset: Vec<char> = Vec::new();
     build_charset(&mut charset, args);
-    gen_random_str(&mut key, &mut charset);
 
-    println!("{}", &key.iter().collect::<String>());
+    match gen_random_str(&charset, args.length) {
+        Ok(mut k) => {
+            println!("{}", &k);
 
-    key.zeroize();
+            k.zeroize();
 
-    if args.entropy {
-        print_entropy(&calculate_entropy(args.length, charset.len()));
+            if args.entropy {
+                print_entropy(&calculate_entropy(args.length, charset.len()));
+            }
+        }
+        Err(e) => {
+            eprintln!("Error: {}", &e);
+        }
     }
 }
 
